@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
+// const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
 const router = express.Router();
 
@@ -59,7 +60,9 @@ router.post("/login", async (req, res) => {
     );
 
     res.status(200).json(authToken);
+    // authToken inside json()
   } catch (e) {
+    console.log(e)
     res.status(500).json({ message: e.message });
   }
 });

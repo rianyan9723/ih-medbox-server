@@ -1,56 +1,69 @@
 const router = require("express").Router();
-const Medbox = require("../models/Medbox.model")
+const Medication = require("../models/Medication.model")
 const fileUpload = require("../config/cloudinary");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
-router.get("/medbox", async (req, res) => {
+router.get("/medvice", async (req, res) => {
   try {
-    const response = await Medbox.find();
+    const response = await Medication.find();
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.post("/medbox/add", async (req, res) => {
+router.post("/medication/add", async (req, res) => {
   try {
     const { name, quantity, usage, expiryDate } = req.body;
     if (!name || !quantity || !usage || !expiryDate) {
       res.status(400).json({ message: "missing fields" });
       return;
     }
-    const response = await Medbox.create({ name, quantity, usage, expiryDate });
+    const response = await Medication.create({ name, quantity, usage, expiryDate });
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.delete("/medbox/:medboxID", async (req, res) => {
+
+router.post("/search", async (req, res, next) => {
   try {
-    await Medbox.findByIdAndDelete(req.params.medboxID);
+    const { searchTerm: searchInput } = req.body;
+    const response = await axios.get(
+      `https://api.fda.gov/drug/label.json?search=indications_and_usage:${searchTerm}`
+    );
+    res.json(response.data.results);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/medication/:medicationID", async (req, res) => {
+  try {
+    await Medication.findByIdAndDelete(req.params.medicationID);
     res
       .status(200)
-      .json({ message: `Medbox with id ${req.params.medboxID} was deleted` });
+      .json({ message: `Medication with id ${req.params.medicationID} was deleted` });
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.get("/medbox/:medboxID", async (req, res) => {
+router.get("/medication/:medicationID", async (req, res) => {
   try {
-    const response = await Medbox.findById(req.params.medboxID);
+    const response = await Medication.findById(req.params.medicationID);
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.put("/medbox/:medboxID", async (req, res) => {
+router.put("/medication/:medicationID", async (req, res) => {
   try {
     const { name, quantity, usage, expiryDate } = req.body;
-    const response = await Medbox.findByIdAndUpdate(
-      req.params.medboxID,
+    const response = await Medication.findByIdAndUpdate(
+      req.params.medviceID,
       {
         name,
         quantity,

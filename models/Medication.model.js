@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 
-const medboxSchema = new Schema({
+const medicationSchema = new Schema({
   name: String,
   quantity: Number,
   usage: String,
@@ -9,4 +9,4 @@ const medboxSchema = new Schema({
 });
 
 //Translates in a projects collection on mongodb
-module.exports = model("Medbox", medboxSchema);
+module.exports = model("Medication", medicationSchema);

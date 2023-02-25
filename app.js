@@ -18,8 +18,8 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
-const medboxRoutes = require("./routes/medbox.routes");
-app.use("/api", medboxRoutes);
+const medviceRoutes = require("./routes/medvice.routes");
+app.use("/api", medviceRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
