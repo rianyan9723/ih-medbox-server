@@ -3,7 +3,7 @@ const Medication = require("../models/Medication.model")
 const fileUpload = require("../config/cloudinary");
 const { isAuthenticated } = require("../middlewares/jwt.middleware");
 
-router.get("/medvice", async (req, res) => {
+router.get("/medication", async (req, res) => {
   try {
     const response = await Medication.find();
     res.status(200).json(response);
@@ -29,7 +29,7 @@ router.post("/medication/add", async (req, res) => {
 
 router.post("/search", async (req, res, next) => {
   try {
-    const { searchTerm: searchInput } = req.body;
+    const { searchTerm } = req.body;
     const response = await axios.get(
       `https://api.fda.gov/drug/label.json?search=indications_and_usage:${searchTerm}`
     );
