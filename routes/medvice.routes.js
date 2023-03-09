@@ -14,28 +14,15 @@ router.get("/medication", async (req, res) => {
 
 router.post("/medication/add", async (req, res) => {
   try {
-    const { name, quantity, usage, expiryDate } = req.body;
-    if (!name || !quantity || !usage || !expiryDate) {
+    const { name, quantity, purpose, usage, expiryDate, otherInfo } = req.body;
+    if (!name || !quantity || !purpose || !usage || !expiryDate) {
       res.status(400).json({ message: "missing fields" });
       return;
     }
-    const response = await Medication.create({ name, quantity, usage, expiryDate });
+    const response = await Medication.create({ name, quantity, purpose, usage, expiryDate, otherInfo });
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
-  }
-});
-
-
-router.post("/search", async (req, res, next) => {
-  try {
-    const { searchTerm } = req.body;
-    const response = await axios.get(
-      `https://api.fda.gov/drug/label.json?search=indications_and_usage:${searchTerm}`
-    );
-    res.json(response.data.results);
-  } catch (error) {
-    next(error);
   }
 });
 
@@ -61,14 +48,16 @@ router.get("/medication/:medicationID", async (req, res) => {
 
 router.put("/medication/:medicationID", async (req, res) => {
   try {
-    const { name, quantity, usage, expiryDate } = req.body;
+    const { name, quantity, purpose, usage, expiryDate, otherInfo } = req.body;
     const response = await Medication.findByIdAndUpdate(
       req.params.medviceID,
-      {
+      { 
         name,
         quantity,
+        purpose,
         usage,
-        expiryDate
+        expiryDate,
+        otherInfo
       },
       { new: true }
     );
