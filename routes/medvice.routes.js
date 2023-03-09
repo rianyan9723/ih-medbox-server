@@ -14,12 +14,12 @@ router.get("/medication", async (req, res) => {
 
 router.post("/medication/add", async (req, res) => {
   try {
-    const { name, quantity, purpose, usage, expiryDate, otherInfo } = req.body;
-    if (!name || !quantity || !purpose || !usage || !expiryDate) {
+    const { name, quantity, purpose, usage, dosage, expiryDate, otherInfo } = req.body;
+    if (!name || !quantity || !purpose || !usage || !dosage || !expiryDate) {
       res.status(400).json({ message: "missing fields" });
       return;
     }
-    const response = await Medication.create({ name, quantity, purpose, usage, expiryDate, otherInfo });
+    const response = await Medication.create({ name, quantity, purpose, usage, dosage, expiryDate, otherInfo });
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
@@ -48,14 +48,15 @@ router.get("/medication/:medicationID", async (req, res) => {
 
 router.put("/medication/:medicationID", async (req, res) => {
   try {
-    const { name, quantity, purpose, usage, expiryDate, otherInfo } = req.body;
+    const { name, quantity, purpose, usage, dosage, expiryDate, otherInfo } = req.body;
     const response = await Medication.findByIdAndUpdate(
       req.params.medviceID,
-      { 
+      {
         name,
         quantity,
         purpose,
         usage,
+        dosage,
         expiryDate,
         otherInfo
       },

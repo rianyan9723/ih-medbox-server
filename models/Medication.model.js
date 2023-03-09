@@ -6,6 +6,7 @@ const medicationSchema = new Schema({
   quantity: Number,
   purpose: String,
   usage: String,
+  dosage: String,
   expiryDate: String,
   otherInfo: String
 });
