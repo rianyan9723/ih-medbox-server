@@ -20,37 +20,38 @@ router.post("/medication/add", async (req, res) => {
       return;
     }
     const response = await Medication.create({ name, quantity, purpose, usage, dosage, expiryDate, otherInfo });
+    console.log(response)
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.delete("/medication/:medicationID", async (req, res) => {
+router.delete("/medication/:_id", async (req, res) => {
   try {
-    await Medication.findByIdAndDelete(req.params.medicationID);
+    await Medication.findByIdAndDelete(req.params._id);
     res
       .status(200)
-      .json({ message: `Medication with id ${req.params.medicationID} was deleted` });
+      .json({ message: `Medication with id ${req.params._id} was deleted` });
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.get("/medication/:medicationID", async (req, res) => {
+router.get("/medication/:_id", async (req, res) => {
   try {
-    const response = await Medication.findById(req.params.medicationID);
+    const response = await Medication.findById(req.params._id);
     res.status(200).json(response);
   } catch (e) {
     res.status(500).json({ message: e });
   }
 });
 
-router.put("/medication/:medicationID", async (req, res) => {
+router.put("/medication/:_id", async (req, res) => {
   try {
     const { name, quantity, purpose, usage, dosage, expiryDate, otherInfo } = req.body;
     const response = await Medication.findByIdAndUpdate(
-      req.params.medviceID,
+      req.params._id,
       {
         name,
         quantity,
